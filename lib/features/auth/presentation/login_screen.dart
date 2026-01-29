@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_constants.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/utils/app_snackbar.dart';
+import 'package:usafi_app/core/utils/validator.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
 import 'package:usafi_app/core/widgets/app_text_field.dart';
 
@@ -16,6 +18,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final bool _obscurePassword = true;
+  TextEditingController? emailController = TextEditingController();
+  TextEditingController? passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          AppTextField(hint: email, keyboardType: TextInputType.emailAddress),
+          AppTextField(hint: email, keyboardType: TextInputType.emailAddress,controller: emailController,),
           SizedBox(height: 14),
-          AppTextField(hint: password, isPassword: _obscurePassword),
+          AppTextField(hint: password, isPassword: _obscurePassword,controller: passwordController,),
 
           Align(
             alignment: Alignment.centerRight,
@@ -115,9 +119,26 @@ class _LoginScreenState extends State<LoginScreen> {
     return AppButton(
       title: logIn,
       onTap: () {
-        Navigator.pushReplacementNamed(context, AppRoutes.mainNavigation);
+        _loginMethod();
+
       },
     );
+  }
+
+  void _loginMethod() {
+    if (AppValidators.email(emailController!.text)) {
+      AppSnackBar.error(context, "Invalid email");
+      return;
+    }
+
+    if (AppValidators.password(passwordController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Weak password",
+      );
+      return;
+    }
+    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.mainNavigation,(route) => false,);
   }
 
   Widget _footer() {

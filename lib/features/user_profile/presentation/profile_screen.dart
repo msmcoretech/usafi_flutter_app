@@ -30,9 +30,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       bottom: false,
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
-        decoration: const BoxDecoration(
-          color: AppColors.primary,
-        ),
+        decoration: const BoxDecoration(color: AppColors.primary),
         child: Column(
           children: [
             Row(
@@ -48,7 +46,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
-                )
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -65,7 +63,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     radius: 40,
                     backgroundColor: AppColors.secondary,
                     backgroundImage: const NetworkImage(
-                      'https://i.pravatar.cc/150?img=47',
+                      'https://i.pravatar.cc/180',
                     ),
                   ),
                 ),
@@ -84,7 +82,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     const SizedBox(height: 6),
                     const Row(
                       children: [
-                        Icon(Icons.call_outlined,color: AppColors.secondary,size: 15,),
+                        Icon(
+                          Icons.call_outlined,
+                          color: AppColors.secondary,
+                          size: 15,
+                        ),
                         Text(
                           '+12 36547890',
                           style: TextStyle(color: Colors.white70),
@@ -94,31 +96,43 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     const SizedBox(height: 4),
                     const Row(
                       children: [
-                        Icon(Icons.email_outlined,color: AppColors.secondary,size: 15,),
+                        Icon(
+                          Icons.email_outlined,
+                          color: AppColors.secondary,
+                          size: 15,
+                        ),
                         Text(
                           'janecooper@usafi.com',
                           style: TextStyle(color: Colors.white70),
                         ),
                       ],
                     ),
+                    SizedBox(height: 10),
                     SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width*0.6,
+                      width: MediaQuery.of(context).size.width * 0.6,
                       child: Row(
                         children: [
-                          GestureDetector(onTap: (){
-                            Navigator.pushNamed(context, AppRoutes.editProfile,);
-                          },
-                              child: _headerButton('Edit Profile')),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.editProfile,
+                              );
+                            },
+                            child: _headerButton('Edit Profile'),
+                          ),
                           const SizedBox(width: 12),
-                          _headerButton('History'),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, AppRoutes.history);
+                            },
+                            child: _headerButton('History'),
+                          ),
                         ],
                       ),
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ],
@@ -163,24 +177,23 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               children: [
                 Text(
                   'Profile Verify',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 SizedBox(height: 4),
                 Text(
                   'Please upload documents and verify this account.',
-                  style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 ),
               ],
             ),
           ),
           const SizedBox(width: 06),
           GestureDetector(
-              onTap: (){
-                Navigator.pushNamed(context, AppRoutes.verifyProfile,);
-              },child: _headerButton('Verify')),
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.verifyProfile);
+            },
+            child: _headerButton('Verify'),
+          ),
         ],
       ),
     );
@@ -200,8 +213,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           _infoRow(title: 'Job Role', value: 'House Supervisors'),
           _divider(),
           _infoRow(
-              title: 'Skills',
-              value: 'Hospitality, events, stadiums, arenas'),
+            title: 'Skills',
+            value: 'Hospitality, events, stadiums, arenas',
+          ),
           _divider(),
           _infoRow(title: 'Education', value: '12th Pass'),
           _divider(),
@@ -213,10 +227,13 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   Widget _mainButton() {
     return SizedBox(
-      width: MediaQuery.of(context).size.width*0.7,
-      child: AppButton(title: "Add/Edit Role & Skills", onTap: (){
-        Navigator.pushNamed(context, AppRoutes.roleSkills,);
-      },),
+      width: MediaQuery.of(context).size.width * 0.7,
+      child: AppButton(
+        title: "Add/Edit Role & Skills",
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.roleSkills);
+        },
+      ),
     );
   }
 
@@ -233,7 +250,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   Widget _headerButton(String title) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       decoration: BoxDecoration(
         color: AppColors.secondary,
         borderRadius: BorderRadius.circular(10),
@@ -258,20 +275,29 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(title!,
-              style: const TextStyle(fontSize: 14, color: AppColors.textPrimary,fontWeight: FontWeight.w600)),
+          Text(
+            title!,
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           const SizedBox(height: 2),
-          Text(value!,
-              style:
-              const TextStyle(fontSize: 18, color: AppColors.textPrimary,fontWeight: FontWeight.w700)),
+          Text(
+            value!,
+            style: const TextStyle(
+              fontSize: 18,
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _divider() {
-    return Divider(height: 1, thickness: 0.6,color: AppColors.jobPending,);
+    return Divider(height: 1, thickness: 0.6, color: AppColors.jobPending);
   }
 }
-
-

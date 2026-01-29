@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_constants.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/utils/app_snackbar.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
 import 'package:usafi_app/core/widgets/app_text_field.dart';
+
+import '../../../core/utils/validator.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -13,6 +16,12 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+
+  TextEditingController? fullNameController = TextEditingController();
+  TextEditingController? phoneNumberController = TextEditingController();
+  TextEditingController? emailController = TextEditingController();
+  TextEditingController? addressController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,22 +116,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
           const SizedBox(height: 24),
 
-          AppTextField(hint: fullName),
+          AppTextField(hint: fullName,controller: fullNameController,),
           const SizedBox(height: 14),
 
           AppTextField(
             hint: phoneNumber,
             keyboardType: TextInputType.phone,
+            maxLength: 10,
+            controller: phoneNumberController,
           ),
           const SizedBox(height: 14),
 
           AppTextField(
             hint: email,
             keyboardType: TextInputType.emailAddress,
+            controller: emailController,
           ),
           const SizedBox(height: 14),
 
           AppTextField(
+            controller: addressController,
             hint: address,
             maxLines: 2,
           ),
@@ -139,8 +152,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return AppButton(
       title: 'Save',
       onTap: () {
-        Navigator.pop(context);
+        _saveProfileMethod();
       },
     );
+  }
+
+  void _saveProfileMethod() {
+    if (AppValidators.fullName(fullNameController!.text)) {
+      AppSnackBar.error(context, "Enter Full name");
+      return;
+    }
+    if (AppValidators.phone(phoneNumberController!.text)) {
+      AppSnackBar.error(context, "Enter valid phone number");
+      return;
+    }
+    if (AppValidators.email(emailController!.text)) {
+      AppSnackBar.error(context, "Invalid email");
+      return;
+    }
+    if (AppValidators.fullName(addressController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Enter valid address",
+      );
+      return;
+    }
+    Navigator.pop(context);
   }
 }

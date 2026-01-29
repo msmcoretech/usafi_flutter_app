@@ -20,6 +20,7 @@ class AppColors {
 
   // Borders / Divider
   static const border = Color(0xFFB2B2B2);
+  static const borderColor = Color(0xFFC4C4C4);
   static const divider = Color(0xFFD9D9D9);
 
   // Error / Success
@@ -35,4 +36,5 @@ class AppColors {
  static final jobHeader = const Color(0xFFE6E3F3);
  static final jobPending = const Color(0xFFC5B3FF);
  static final jobRejected = const Color(0xFFEB4335);
+ static final jobFinished = const Color(0xFF000000).withOpacity(0.2);
 }

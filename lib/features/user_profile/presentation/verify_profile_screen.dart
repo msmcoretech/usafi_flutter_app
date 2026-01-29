@@ -190,6 +190,7 @@ class ProfileVerifyScreen extends ConsumerWidget {
       ) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: AppColors.secondary,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),

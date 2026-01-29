@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:usafi_app/app/routes.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
 
 class JobDetailScreen extends StatefulWidget {
   final String jobStatus;
-  const JobDetailScreen({super.key, required this.jobStatus});
+  final bool isFromWhere;
+  const JobDetailScreen({super.key, required this.jobStatus, required this.isFromWhere});
 
   @override
   State<JobDetailScreen> createState() => _JobDetailScreenState();
@@ -67,15 +69,18 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
 
   Widget _statusChip() {
     Color bgColor;
-    Color textColor;
+    Color textColor = AppColors.textPrimary;
+
     switch (widget.jobStatus) {
-      case 'Confirmed':
+      case 'Confirmed' || 'New!':
         bgColor = AppColors.yellow;
-        textColor = AppColors.textPrimary;
         break;
-      case 'Pending':
+      case 'Pending' || 'Running':
         bgColor = AppColors.jobPending;
-        textColor = AppColors.textPrimary;
+        break;
+      case 'Finished':
+        bgColor = AppColors.jobHeader.withOpacity(0.2);
+        textColor = AppColors.secondary;
         break;
       default:
         bgColor = AppColors.jobRejected;
@@ -232,7 +237,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
             Text(
               title,
               style:
-              const TextStyle(fontSize: 13, color: AppColors.textSecondary,),
+              const TextStyle(fontSize: 13, color: AppColors.textPrimary,),
             ),
             Text(
               value,
@@ -282,7 +287,7 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
 
 
   Widget _bottomActions() {
-    return Container(
+    return widget.isFromWhere?SizedBox():Container(
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -297,7 +302,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
         children: [
           Expanded(
             child: OutlinedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.map,);
+              },
               icon: const Icon(Icons.map,size: 30,),
               label: const Text('View Map',style: TextStyle(
                 fontSize: 18,fontWeight: FontWeight.w700,
@@ -314,7 +321,9 @@ class _JobDetailScreenState extends State<JobDetailScreen> {
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: AppButton(title: "Start Journey", onTap: (){}),
+            child: AppButton(title: "Start Journey", onTap: (){
+              Navigator.pushNamed(context, AppRoutes.map,);
+            }),
           ),
         ],
       ),

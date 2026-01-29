@@ -2,13 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_constants.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/utils/app_snackbar.dart';
+import 'package:usafi_app/core/utils/validator.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
 import 'package:usafi_app/core/widgets/app_text_field.dart';
 
 import '../../../app/routes.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
+
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+
+  TextEditingController? emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +40,6 @@ class ForgotPasswordScreen extends StatelessWidget {
     );
   }
 
-
   Widget _header(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height / 2.8,
@@ -40,7 +49,6 @@ class ForgotPasswordScreen extends StatelessWidget {
       child: Image.asset(appLogo, height: 75),
     );
   }
-
 
   Widget _forgotCard(BuildContext context) {
     return Container(
@@ -98,6 +106,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
           AppTextField(
             hint: email,
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
           ),
 
@@ -106,11 +115,19 @@ class ForgotPasswordScreen extends StatelessWidget {
           AppButton(
             title: verifyEmail,
             onTap: () {
-              Navigator.pushNamed(context, AppRoutes.verification,arguments: true);
+              _verifyEmailMethod();
             },
           ),
         ],
       ),
     );
+  }
+
+  void _verifyEmailMethod() {
+    if (AppValidators.email(emailController!.text)) {
+      AppSnackBar.error(context, "Invalid email");
+      return;
+    }
+    Navigator.pushNamed(context, AppRoutes.verification,arguments: true);
   }
 }

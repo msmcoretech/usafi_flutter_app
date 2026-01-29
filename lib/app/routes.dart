@@ -7,8 +7,10 @@ import 'package:usafi_app/features/auth/presentation/signup_screen.dart';
 import 'package:usafi_app/features/intro/view/intro_screen.dart';
 import 'package:usafi_app/features/main_navigation/presentation/job_detail_screen.dart';
 import 'package:usafi_app/features/main_navigation/presentation/main_navigation_screen.dart';
+import 'package:usafi_app/features/main_navigation/presentation/map_screen.dart';
 import 'package:usafi_app/features/splash/view/splash_screen.dart';
 import 'package:usafi_app/features/user_profile/presentation/edit_profile_screen.dart';
+import 'package:usafi_app/features/user_profile/presentation/history_screen.dart';
 import 'package:usafi_app/features/user_profile/presentation/profile_screen.dart';
 import 'package:usafi_app/features/user_profile/presentation/role_skills_screen.dart';
 import 'package:usafi_app/features/user_profile/presentation/verify_profile_screen.dart';
@@ -27,6 +29,8 @@ class AppRoutes {
   static const editProfile = '/edit-profile';
   static const roleSkills = '/role-skills';
   static const verifyProfile = '/verify-profile';
+  static const history = '/history';
+  static const map = '/map';
 }
 
 class AppRouter {
@@ -59,9 +63,9 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const MainNavigationScreen());
 
       case AppRoutes.jobDetail:
-        final String jobStatus = settings.arguments as String? ?? "";
+        final Map<String?,dynamic> data = settings.arguments as Map<String?,dynamic>? ?? {};
         return MaterialPageRoute(
-          builder: (_) => JobDetailScreen(jobStatus: jobStatus),
+          builder: (_) => JobDetailScreen(jobStatus: data["jobStatus"]!, isFromWhere: data["isFromWhere"]!,),
         );
 
       case AppRoutes.profile:
@@ -75,6 +79,12 @@ class AppRouter {
 
         case AppRoutes.verifyProfile:
         return MaterialPageRoute(builder: (_) => const ProfileVerifyScreen());
+
+        case AppRoutes.history:
+        return MaterialPageRoute(builder: (_) => const HistoryScreen());
+
+        case AppRoutes.map:
+        return MaterialPageRoute(builder: (_) => const MapScreen());
 
       default:
         return MaterialPageRoute(builder: (_) => const IntroScreen());

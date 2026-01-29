@@ -4,9 +4,11 @@ import 'package:pinput/pinput.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_constants.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/utils/app_snackbar.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
 
 import '../../../app/routes.dart';
+import '../../../core/utils/validator.dart';
 
 class VerificationScreen extends StatefulWidget {
   final bool isFromForgot;
@@ -20,6 +22,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   static const int _initialSeconds = 300;
   late int _secondsRemaining;
   Timer? _timer;
+  TextEditingController? otpController = TextEditingController();
 
   @override
   void initState() {
@@ -129,12 +132,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
           AppButton(
             title: verifyCode,
             onTap: () {
-              if(widget.isFromForgot){
-                Navigator.pushReplacementNamed(
-                    context, AppRoutes.createNewPassword);
-              }else{
-                Navigator.pushReplacementNamed(context, AppRoutes.mainNavigation);
-              }
+              _verifyCodeMethod();
             },
           ),
           const SizedBox(height: 20),
@@ -163,6 +161,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     return Center(
       child: Pinput(
         length: 4,
+        controller: otpController,
         keyboardType: TextInputType.number,
         defaultPinTheme: defaultPinTheme,
         focusedPinTheme: defaultPinTheme.copyWith(
@@ -233,6 +232,19 @@ class _VerificationScreenState extends State<VerificationScreen> {
         ),
       ),
     );
+  }
+
+  void _verifyCodeMethod() {
+    if (AppValidators.otp(otpController!.text)) {
+      AppSnackBar.error(context, 'Please enter valid 4 digit OTP');
+      return;
+    }
+    if(widget.isFromForgot){
+      Navigator.pushReplacementNamed(
+          context, AppRoutes.createNewPassword);
+    }else{
+      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.mainNavigation,(route) => false,);
+    }
   }
 
 }

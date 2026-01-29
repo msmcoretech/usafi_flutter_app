@@ -135,6 +135,7 @@ class _OffersScreenState extends State<OffersScreen> {
           role: 'Bar Staff',
           location: 'Etihad Stadium, Manchester',
           status: 'New!',
+          index: index,
           showApplyButton: true,
           onApply: () {},
         );

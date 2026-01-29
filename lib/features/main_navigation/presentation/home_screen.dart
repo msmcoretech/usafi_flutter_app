@@ -17,50 +17,51 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Future.delayed(const Duration(seconds: 3), _autoScroll);
   }
 
-  void _autoScroll() {
-    if (_pageController.hasClients) {
-      int nextPage = (_currentIndex + 1);
-      _pageController.animateToPage(
-        nextPage,
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(statusBarColor: AppColors.primary),
+      value: const SystemUiOverlayStyle(
+        statusBarColor: AppColors.primary,
+        statusBarIconBrightness: Brightness.light,
+      ),
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(
-            bottom: false,
-            top: true,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _appBar(),
-                  const SizedBox(height: 10),
-                  _companyCard(),
-                  const SizedBox(height: 16),
-                  _shiftConfirmationCarousel(),
-                  _jobOffersHeader(),
-                  _jobOffersList(),
-                  _statsCard(),
-                ],
-              ),
+            top: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _appBar(),
+        
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        _companyCard(),
+                        const SizedBox(height: 16),
+                        _shiftConfirmationCarousel(),
+                        _jobOffersHeader(),
+                        _jobOffersList(),
+                        _statsCard(),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
   }
+
 
   Widget _appBar() {
     return Container(
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withOpacity(0.15),
+        color: AppColors.circleButton,
       ),
       child: Icon(icon, color: Colors.white),
     );
@@ -122,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(10),
           image: const DecorationImage(
             image: NetworkImage(
-              'https://images.unsplash.com/photo-1521737604893-d14cc237f11d',
+              'https://i.pravatar.cc/140',
             ),
             fit: BoxFit.cover,
           ),
@@ -155,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const CircleAvatar(
                     radius: 22,
                     backgroundImage: NetworkImage(
-                      'https://media.istockphoto.com/id/950628194/photo/gold-letter-m-with-clipping-path.jpg?s=612x612&w=0&k=20&c=Ww9YXbmGkq6URcElw4ngqSO5nk5PnZdRCRt7rkNRytU=',
+                      'https://i.pravatar.cc/120',
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -302,128 +303,137 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         scrollDirection: Axis.horizontal,
-        itemBuilder: (_, __) => _jobOfferCard(),
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        itemBuilder: (_, index) => _jobOfferCard(index),
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemCount: 2,
       ),
     );
   }
 
-  Widget _jobOfferCard() {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.7,
-      decoration: BoxDecoration(
-        color: AppColors.lightPrimary,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(08),
-            decoration: BoxDecoration(
-              color: AppColors.mediumPrimary,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+  Widget _jobOfferCard(int index) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          AppRoutes.jobDetail,
+          arguments: {"jobStatus": "New!", "isFromWhere": false},
+        );
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.7,
+        decoration: BoxDecoration(
+          color: AppColors.lightPrimary,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(08),
+              decoration: BoxDecoration(
+                color: AppColors.mediumPrimary,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              child: const Text(
+                'Tomorrow, Tuesday, November 18',
+                style: TextStyle(fontSize: 14),
+              ),
             ),
-            child: const Text(
-              'Tomorrow, Tuesday, November 18',
-              style: TextStyle(fontSize: 14),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 22,
-                      backgroundImage: NetworkImage(
-                        'https://i.pravatar.cc/150',
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                    Expanded(
-                      child: const Text(
-                        'North — New Accreditations to Work Future Etihad Games',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
-                          fontSize: 16,
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 22,
+                        backgroundImage: NetworkImage(
+                          'https://i.pravatar.cc/11$index',
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Divider(height: 10, color: AppColors.mediumPrimary),
-                Row(
-                  children: [
-                    Icon(Icons.location_on, color: AppColors.primary),
-                    Text(
-                      'Etihad Stadium, Manchester',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 04),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 03,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          const Text(
-                            '£12.21/',
-                            style: TextStyle(
-                              color: AppColors.secondary,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const Text(
-                            'hour est.',
-                            style: TextStyle(
-                              color: AppColors.secondary,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {},
+                      SizedBox(width: 10,),
+                      Expanded(
                         child: const Text(
-                          'Apply Now',
+                          'North — New Accreditations to Work Future Etihad Games',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 20,
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                            fontSize: 16,
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                  Divider(height: 10, color: AppColors.mediumPrimary),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, color: AppColors.primary),
+                      Text(
+                        'Etihad Stadium, Manchester',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 04),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 03,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const Text(
+                              '£12.21/',
+                              style: TextStyle(
+                                color: AppColors.secondary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const Text(
+                              'hour est.',
+                              style: TextStyle(
+                                color: AppColors.secondary,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: const Text(
+                            'Apply Now',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: AppColors.secondary,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

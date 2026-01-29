@@ -8,6 +8,7 @@ class JobItemCard extends StatelessWidget {
   final String role;
   final String location;
   final String status;
+  final int index;
   final bool showApplyButton;
   final VoidCallback? onApply;
 
@@ -17,6 +18,7 @@ class JobItemCard extends StatelessWidget {
     required this.time,
     required this.title,
     required this.role,
+    required this.index,
     required this.location,
     required this.status,
     this.showApplyButton = false,
@@ -37,12 +39,7 @@ class JobItemCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          _header(),
-          _body(),
-        ],
-      ),
+      child: Column(children: [_header(), _body()]),
     );
   }
 
@@ -88,14 +85,14 @@ class JobItemCard extends StatelessWidget {
     Color textColor = AppColors.textPrimary;
 
     switch (status) {
-      case 'Confirmed':
+      case 'Confirmed' || 'New!':
         bgColor = AppColors.yellow;
         break;
-      case 'Pending':
+      case 'Pending' || 'Running':
         bgColor = AppColors.jobPending;
         break;
-      case 'New!':
-        bgColor = AppColors.yellow;
+      case 'Finished':
+        bgColor = AppColors.jobFinished;
         break;
       default:
         bgColor = AppColors.jobRejected;
@@ -110,7 +107,11 @@ class JobItemCard extends StatelessWidget {
       ),
       child: Text(
         status,
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: textColor),
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          color: textColor,
+        ),
       ),
     );
   }
@@ -126,10 +127,10 @@ class JobItemCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 22,
                 backgroundImage: NetworkImage(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVBmvQ0vWIbzrOhkQyUhU-iQ2M2NYbm9lnzg&s',
+                  'https://i.pravatar.cc/16$index',
                 ),
               ),
               const SizedBox(width: 10),
@@ -141,10 +142,15 @@ class JobItemCard extends StatelessWidget {
                       title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold,color: AppColors.textPrimary),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
-                    if (!showApplyButton)...[const SizedBox(height: 4),
-                    Text(role),]
+                    if (!showApplyButton) ...[
+                      const SizedBox(height: 4),
+                      Text(role),
+                    ],
                   ],
                 ),
               ),
@@ -155,7 +161,15 @@ class JobItemCard extends StatelessWidget {
             children: [
               const Icon(Icons.location_on, size: 18, color: AppColors.primary),
               const SizedBox(width: 6),
-              Expanded(child: Text(location,style: const TextStyle(fontWeight: FontWeight.w500,color: AppColors.textPrimary),)),
+              Expanded(
+                child: Text(
+                  location,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
             ],
           ),
           if (showApplyButton) _applyButton(),
@@ -166,7 +180,7 @@ class JobItemCard extends StatelessWidget {
 
   Widget _applyButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 06),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 06),
       child: Container(
         height: 44,
         padding: EdgeInsets.symmetric(horizontal: 20),

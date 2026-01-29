@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/utils/app_snackbar.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
 import 'package:usafi_app/core/widgets/app_text_field.dart';
+
+import '../../../core/utils/validator.dart';
 
 class RoleSkillsScreen extends StatefulWidget {
   const RoleSkillsScreen({super.key});
@@ -12,6 +15,12 @@ class RoleSkillsScreen extends StatefulWidget {
 }
 
 class _RoleSkillsScreenState extends State<RoleSkillsScreen> {
+
+  TextEditingController? experienceController = TextEditingController();
+  TextEditingController? educationController = TextEditingController();
+  TextEditingController? jobRoleController = TextEditingController();
+  TextEditingController? skillsController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,14 +115,15 @@ class _RoleSkillsScreenState extends State<RoleSkillsScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          AppTextField(hint: 'Experience'),
+          AppTextField(hint: 'Experience',controller: experienceController,),
           const SizedBox(height: 14),
-          AppTextField(hint: 'Education'),
+          AppTextField(hint: 'Education',controller: educationController,),
           const SizedBox(height: 14),
-          AppTextField(hint: 'Job Role'),
+          AppTextField(hint: 'Job Role',controller: jobRoleController,),
           const SizedBox(height: 14),
           AppTextField(
             hint: 'Skills',
+            controller: skillsController,
           ),
           const SizedBox(height: 24),
           _saveButton(),
@@ -126,8 +136,38 @@ class _RoleSkillsScreenState extends State<RoleSkillsScreen> {
     return AppButton(
       title: 'Save',
       onTap: () {
-        Navigator.pop(context);
+        _saveMethod();
       },
     );
+  }
+
+  void _saveMethod() {
+    if (AppValidators.fullName(experienceController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Enter valid experience",
+      );
+      return;
+    }if (AppValidators.fullName(educationController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Enter valid Eduction",
+      );
+      return;
+    }if (AppValidators.fullName(jobRoleController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Enter valid job role",
+      );
+      return;
+    }
+    if (AppValidators.fullName(skillsController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Enter valid skills",
+      );
+      return;
+    }
+    Navigator.pop(context);
   }
 }

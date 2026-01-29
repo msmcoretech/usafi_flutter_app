@@ -3,6 +3,8 @@ import 'package:usafi_app/app/routes.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_constants.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/utils/app_snackbar.dart';
+import 'package:usafi_app/core/utils/validator.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
 import 'package:usafi_app/core/widgets/app_text_field.dart';
 
@@ -17,6 +19,8 @@ class CreateNewPasswordScreen extends StatefulWidget {
 class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
   final bool _obscurePassword = true;
   final bool _obscureConfirmPassword = true;
+  TextEditingController? passwordController = TextEditingController();
+  TextEditingController? confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +99,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
 
           AppTextField(
             hint: password,
+            controller: passwordController,
             isPassword: _obscurePassword,
             ),
 
@@ -102,6 +107,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
 
           AppTextField(
             hint: confirmPassword,
+            controller: confirmPasswordController,
             isPassword: _obscureConfirmPassword,
           ),
 
@@ -118,6 +124,18 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
 
 
   void _onChangePassword() {
-    Navigator.pushReplacementNamed(context, AppRoutes.mainNavigation);
+    if (AppValidators.password(passwordController!.text)) {
+      AppSnackBar.error(context, 'Weak password');
+      return;
+    }
+    if (AppValidators.password(confirmPasswordController!.text)) {
+      AppSnackBar.error(context, 'Weak confirm password');
+      return;
+    }
+    if (AppValidators.confirmPassword(passwordController!.text,confirmPasswordController!.text)) {
+      AppSnackBar.error(context, 'Please enter valid password');
+      return;
+    }
+    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.mainNavigation,(route) => false,);
   }
 }

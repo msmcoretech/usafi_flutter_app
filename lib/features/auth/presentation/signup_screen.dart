@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_constants.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/utils/app_snackbar.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
 import 'package:usafi_app/core/widgets/app_text_field.dart';
 
 import '../../../app/routes.dart';
+import '../../../core/utils/validator.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -15,6 +17,16 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
+  TextEditingController? emailController = TextEditingController();
+  TextEditingController? fullNameController = TextEditingController();
+  TextEditingController? phoneNumberController = TextEditingController();
+  TextEditingController? passwordController = TextEditingController();
+  TextEditingController? confirmPasswordController = TextEditingController();
+  TextEditingController? jobRoleController = TextEditingController();
+  TextEditingController? skillsController = TextEditingController();
+  TextEditingController? addressController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,40 +100,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           const SizedBox(height: 20),
 
-          AppTextField(hint: fullName),
+          AppTextField(hint: fullName,controller: fullNameController,),
           const SizedBox(height: 14),
 
           AppTextField(
             hint: phoneNumber,
+            controller: phoneNumberController,
             keyboardType: TextInputType.phone,
+            maxLength: 10,
           ),
           const SizedBox(height: 14),
 
           AppTextField(
             hint: email,
+            controller: emailController,
             keyboardType: TextInputType.emailAddress,
           ),
           const SizedBox(height: 14),
 
           AppTextField(
             hint: password,
+            controller: passwordController,
             isPassword: true,
           ),
           const SizedBox(height: 14),
 
           AppTextField(
             hint: confirmPassword,
+            controller: confirmPasswordController,
             isPassword: true,
           ),
           const SizedBox(height: 14),
 
-          AppTextField(hint: jobRole),
+          AppTextField(hint: jobRole,controller: jobRoleController,),
           const SizedBox(height: 14),
 
-          AppTextField(hint: skills),
+          AppTextField(hint: skills,controller: skillsController,),
           const SizedBox(height: 14),
 
-          AppTextField(hint: address),
+          AppTextField(hint: address,controller: addressController,),
           const SizedBox(height: 20),
 
           _signUpButton(),
@@ -135,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return AppButton(
       title: signup,
       onTap: () {
-        Navigator.pushNamed(context, AppRoutes.verification,arguments: false);
+        _signupMethod();
       },
     );
   }
@@ -234,5 +251,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  void _signupMethod() {
+    if (AppValidators.fullName(fullNameController!.text)) {
+      AppSnackBar.error(context, "Enter Full name");
+      return;
+    }
+    if (AppValidators.phone(phoneNumberController!.text)) {
+      AppSnackBar.error(context, "Enter valid phone number");
+      return;
+    }
+    if (AppValidators.email(emailController!.text)) {
+      AppSnackBar.error(context, "Invalid email");
+      return;
+    }
+    if (AppValidators.password(passwordController!.text)) {
+      AppSnackBar.error(context, "Weak Password");
+      return;
+    }
+    if (AppValidators.password(confirmPasswordController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Weak confirm password",
+      );
+      return;
+    }
+    if (AppValidators.confirmPassword(passwordController!.text,confirmPasswordController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Password does not match",
+      );
+      return;
+    }
+    if (AppValidators.fullName(jobRoleController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Enter valid job role",
+      );
+      return;
+    }
+    if (AppValidators.fullName(skillsController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Enter valid skills",
+      );
+      return;
+    }
+    if (AppValidators.fullName(addressController!.text)) {
+      AppSnackBar.error(
+        context,
+        "Enter valid address",
+      );
+      return;
+    }
+    Navigator.pushNamed(context, AppRoutes.verification,arguments: false);
   }
 }

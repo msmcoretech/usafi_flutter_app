@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:usafi_app/core/constants/app_colors.dart';
 
 final userProfileProvider =
 StateNotifierProvider<UserProfileNotifier, UserProfileState>(
@@ -90,13 +91,15 @@ class UserProfileNotifier extends StateNotifier<UserProfileState> {
       barrierDismissible: false,
       builder: (_) {
         return AlertDialog(
+          backgroundColor: AppColors.secondary,
           title: const Text('Permission Required'),
           content: const Text(
-            'Verification ke liye camera/gallery permission dena zaroori hai.',
+            'We need to allow permission for the uploading documents',
           ),
           actions: [
             TextButton(
               onPressed: () {
+                Navigator.of(context).pop();
                 openAppSettings();
               },
               child: const Text('OK'),

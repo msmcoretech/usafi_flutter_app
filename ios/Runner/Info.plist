@@ -34,6 +34,10 @@
 	<string>We may save images for verification.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need photo library access to upload documents.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs location to show your job route</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs location to track your journey</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
