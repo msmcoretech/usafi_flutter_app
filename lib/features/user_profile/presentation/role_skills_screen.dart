@@ -3,6 +3,7 @@ import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
 import 'package:usafi_app/core/utils/app_snackbar.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
+import 'package:usafi_app/core/widgets/app_circle_button.dart';
 import 'package:usafi_app/core/widgets/app_text_field.dart';
 
 import '../../../core/utils/validator.dart';
@@ -66,18 +67,12 @@ class _RoleSkillsScreenState extends State<RoleSkillsScreen> {
             ),
             Positioned(
               top: 0,
-              left: 16,
-              child: CircleAvatar(
-                radius: 18,
-                backgroundColor: AppColors.circleButton,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                ),
+              left: 10,
+              child: AppCircleButton(
+                icon: back,
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ),
           ],

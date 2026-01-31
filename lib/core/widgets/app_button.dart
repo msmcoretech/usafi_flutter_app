@@ -19,8 +19,8 @@ class AppButton extends StatelessWidget {
     this.textColor,
     this.height = 56,
     this.borderRadius = 15,
-    this.fontWeight = FontWeight.w700,
-    this.fontSize = 18,
+    this.fontWeight = FontWeight.bold,
+    this.fontSize = 20,
   });
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
+import 'package:usafi_app/core/constants/app_images.dart';
 import 'package:usafi_app/features/main_navigation/presentation/chat_screen.dart';
 import 'package:usafi_app/features/main_navigation/presentation/feed_screen.dart';
 import 'package:usafi_app/features/main_navigation/presentation/home_screen.dart';
@@ -53,43 +54,43 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             ),
             items: [
               BottomNavigationBarItem(icon: BottomNavItem(
-                icon: Icons.home_filled,
+                icon: _currentIndex == 0?homeSelected:homeUnselected,
                 label: 'Home',
                 isSelected: _currentIndex == 0,
               ),
-                label: "Home"
+                label: "HOME"
               ),
               BottomNavigationBarItem(
                 icon: BottomNavItem(
-                  icon: Icons.calendar_month,
+                  icon: _currentIndex == 1?scheduleSelected:scheduleUnselected,
                   label: 'Schedule',
                   isSelected: _currentIndex == 1,
                 ),
-                label: "Schedule",
+                label: "SCHEDULE",
               ),
               BottomNavigationBarItem(
                 icon: BottomNavItem(
-                  icon: Icons.campaign,
+                  icon: _currentIndex == 2?offerSelected:offerUnselected,
                   label: 'Offers',
                   isSelected: _currentIndex == 2,
                 ),
-                label: "Offers",
+                label: "OFFERS",
               ),
               BottomNavigationBarItem(
                 icon: BottomNavItem(
-                  icon: Icons.article_outlined,
+                  icon: _currentIndex == 3?feedSelected:feedUnselected,
                   label: 'Feeds',
                   isSelected: _currentIndex == 3,
                 ),
-                label: "Feeds",
+                label: "FEEDS",
               ),
               BottomNavigationBarItem(
                 icon: BottomNavItem(
-                  icon: Icons.chat_bubble_outline,
+                  icon: _currentIndex == 4?chatSelected:chatUnselected,
                   label: 'Chat',
                   isSelected: _currentIndex == 4,
                 ),
-                label: "Chat",
+                label: "CHAT",
               ),
             ],
           ),
@@ -100,7 +101,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 }
 
 class BottomNavItem extends StatelessWidget {
-  final IconData icon;
+  final String icon;
   final String label;
   final bool isSelected;
 
@@ -125,10 +126,9 @@ class BottomNavItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
         ),
-        Icon(
-          icon,
-          color:
-          isSelected ? AppColors.primary : AppColors.textPrimary,
+        Image(
+          image: AssetImage(icon),
+          height: 25,
         ),
       ],
     );

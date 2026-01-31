@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
+import 'package:usafi_app/core/widgets/app_circle_button.dart';
 import 'package:usafi_app/features/user_profile/providers/user_profile_providers.dart';
 
 class ProfileVerifyScreen extends ConsumerWidget {
@@ -58,15 +59,12 @@ class ProfileVerifyScreen extends ConsumerWidget {
             ),
             Positioned(
               top: 0,
-              left: 16,
-              child: CircleAvatar(
-                radius: 18,
-                backgroundColor: AppColors.circleButton,
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back,
-                      color: Colors.white, size: 20),
-                  onPressed: () => Navigator.pop(context),
-                ),
+              left: 10,
+              child: AppCircleButton(
+                icon: back,
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ),
           ],
@@ -133,6 +131,7 @@ class ProfileVerifyScreen extends ConsumerWidget {
           value: state.selectedDocument,
           hint: const Text('Select Document'),
           isExpanded: true,
+          icon: Icon(Icons.keyboard_arrow_down),
           items: documents
               .map(
                 (doc) => DropdownMenuItem(
@@ -167,8 +166,11 @@ class ProfileVerifyScreen extends ConsumerWidget {
             ? const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.upload, size: 36),
-            SizedBox(height: 8),
+            Image(
+              image: AssetImage(upload),
+              height: 30,
+            ),
+            SizedBox(height: 12),
             Text('Upload id here'),
           ],
         )

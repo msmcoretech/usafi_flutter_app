@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:usafi_app/app/routes.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
+import 'package:usafi_app/core/widgets/app_circle_button.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -77,17 +78,10 @@ class _ChatScreenState extends State<ChatScreen>
         style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: AppColors.secondary),
       ),
       actions: [
-        GestureDetector(
-          onTap: (){
-            Navigator.pushNamed(context, AppRoutes.profile,);
-          },
-          child: CircleAvatar(
-            backgroundColor: AppColors.circleButton,
-            child: Icon(Icons.menu,color: AppColors.secondary,size: 20,),
-          ),
-        ),SizedBox(
-          width: 10,
-        ),
+        AppCircleButton(profileImage: 'https://i.pravatar.cc/180', onTap: (){
+          Navigator.pushNamed(context, AppRoutes.profile,);
+        },profileIcon: true,),
+        SizedBox(width: 10,),
       ],
     );
   }
@@ -147,20 +141,23 @@ class _ChatScreenState extends State<ChatScreen>
             ),
             child: Text(
               message.message,
-              style: message.isMe ?GoogleFonts.jost(
+              style: message.isMe ?TextStyle(
                 color:AppColors.textPrimary,
                 fontSize: 14,
-              ):GoogleFonts.jost(
+              ):TextStyle(
                 color:AppColors.textPrimary,
                 fontSize: 14,
               ),
             ),
           ),
-          Text(
-            message.time,
-            style:GoogleFonts.jost(
-              fontSize: 11,
-              color:AppColors.textSecondary,
+          Padding(
+            padding: const EdgeInsets.only(right: 14.0),
+            child: Text(
+              message.time,
+              style:TextStyle(
+                fontSize: 11,
+                color:AppColors.textSecondary,
+              ),
             ),
           ),
           SizedBox(

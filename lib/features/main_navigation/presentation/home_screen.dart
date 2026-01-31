@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:usafi_app/app/routes.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
+import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/widgets/app_circle_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,7 +21,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -30,31 +31,22 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
+          appBar: _appBar(),
           body: SafeArea(
             top: false,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _appBar(),
-        
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        _companyCard(),
-                        const SizedBox(height: 16),
-                        _shiftConfirmationCarousel(),
-                        _jobOffersHeader(),
-                        _jobOffersList(),
-                        _statsCard(),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  _companyCard(),
+                  const SizedBox(height: 16),
+                  _shiftConfirmationCarousel(),
+                  _jobOffersHeader(),
+                  _jobOffersList(),
+                  _statsCard(),
+                ],
+              ),
             ),
           ),
         ),
@@ -62,55 +54,54 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-  Widget _appBar() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(color: AppColors.primary),
-      child: Row(
-        children: [
-          const CircleAvatar(
-            radius: 22,
-            backgroundImage: NetworkImage('https://i.pravatar.cc/150'),
-          ),
-          const SizedBox(width: 12),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Hello', style: TextStyle(color: Colors.white70)),
-              Text(
-                'Jane Cooper',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+  PreferredSizeWidget _appBar() {
+    return AppBar(
+      backgroundColor: AppColors.primary,
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: AppCircleButton(
+          profileImage: "https://i.pravatar.cc/180",
+          onTap: () {
+            Navigator.pushNamed(context, AppRoutes.profile,);
+          },
+          profileIcon: true,
+        ),
+      ),
+      leadingWidth: 60,
+      titleSpacing: 06,
+      title: Container(
+        decoration: const BoxDecoration(color: AppColors.primary),
+        child:  Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Hello', style: TextStyle(color: AppColors.jobPending,fontSize: 12,fontWeight: FontWeight.w400)),
+            const Text(
+              'Jane Cooper',
+              style: TextStyle(
+                color: AppColors.secondary,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-            ],
-          ),
-          const Spacer(),
-          _circleIcon(Icons.search),
-          _circleIcon(Icons.notifications_none),
-          GestureDetector(
-            onTap: (){
-              Navigator.pushNamed(context, AppRoutes.profile,);
-            },
-            child: _circleIcon(Icons.menu),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget _circleIcon(IconData icon) {
-    return Container(
-      margin: const EdgeInsets.only(left: 10),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColors.circleButton,
-      ),
-      child: Icon(icon, color: Colors.white),
+       bottom: PreferredSize(preferredSize: Size(double.infinity, 06), child: Container()),
+      actions: [
+        AppCircleButton(
+          icon: search,
+          onTap: () {
+            // Navigator.pushNamed(context, AppRoutes.notification,);
+          },
+        ),
+        AppCircleButton(
+          icon: notification,
+          onTap: () {
+            Navigator.pushNamed(context, AppRoutes.notification,);
+          },
+        ),
+        SizedBox(width: 10,)
+      ],
     );
   }
 
@@ -122,14 +113,26 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image: const DecorationImage(
-            image: NetworkImage(
-              'https://i.pravatar.cc/140',
-            ),
+            image: NetworkImage('https://i.pravatar.cc/100'),
             fit: BoxFit.cover,
           ),
         ),
         child: Stack(
           children: [
+            Positioned.fill(child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.transparent,
+                    AppColors.textPrimary,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  tileMode: TileMode.mirror
+                ),
+              ),
+            ),),
             Positioned(
               top: 08,
               right: 08,
@@ -155,9 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   const CircleAvatar(
                     radius: 22,
-                    backgroundImage: NetworkImage(
-                      'https://i.pravatar.cc/120',
-                    ),
+                    backgroundImage: NetworkImage('https://i.pravatar.cc/190'),
                   ),
                   const SizedBox(width: 8),
                   const Text(
@@ -181,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: [
         SizedBox(
-          height: 95,
+          height: 85,
           child: PageView.builder(
             controller: _pageController,
             itemCount: 3,
@@ -211,7 +212,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Icon(Icons.task_alt, color: Colors.green, size: 30),
+            const Image(
+              image: AssetImage(confirm),
+              height: 30,
+            ),
             const SizedBox(width: 12),
             const Expanded(
               child: Column(
@@ -229,18 +233,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.secondary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              child: const Text(
-                "Confirm",
-                style: TextStyle(
-                  color: AppColors.primary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.secondary,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: const Text(
+                  "Confirm",
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
             ),
@@ -299,7 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _jobOffersList() {
     return SizedBox(
-      height: 190,
+      height: 200,
       child: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         scrollDirection: Axis.horizontal,
@@ -330,7 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(08),
+              padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: AppColors.mediumPrimary,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -353,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           'https://i.pravatar.cc/11$index',
                         ),
                       ),
-                      SizedBox(width: 10,),
+                      SizedBox(width: 10),
                       Expanded(
                         child: const Text(
                           'North — New Accreditations to Work Future Etihad Games',
@@ -368,10 +375,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  Divider(height: 10, color: AppColors.mediumPrimary),
+                  Divider(height: 20, color: AppColors.mediumPrimary),
                   Row(
                     children: [
-                      Icon(Icons.location_on, color: AppColors.primary),
+                      Image(
+                        image: AssetImage(location),
+                        height: 17,
+                      ),
+                      SizedBox(width: 07,),
                       Text(
                         'Etihad Stadium, Manchester',
                         style: TextStyle(
@@ -382,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 04),
+                  SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
@@ -401,7 +412,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               '£12.21/',
                               style: TextStyle(
                                 color: AppColors.secondary,
-                                fontSize: 16,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -409,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               'hour est.',
                               style: TextStyle(
                                 color: AppColors.secondary,
-                                fontSize: 14,
+                                fontSize: 11,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -438,10 +449,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
   Widget _statsCard() {
     return Container(
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
       decoration: BoxDecoration(
         color: AppColors.lightPrimary,
         borderRadius: BorderRadius.circular(20),
@@ -449,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(12),
       child: Row(
         children: [
-          Expanded(child: _statBox()),
+          _statBox(),
           const SizedBox(width: 12),
           Expanded(child: _earningBox()),
         ],
@@ -459,6 +469,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _statBox() {
     return Container(
+      width: 120,
       // padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: AppColors.secondary,
@@ -466,33 +477,35 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Column(
         children: [
-          SizedBox(
-            height: 06,
-          ),
+          SizedBox(height: 10,),
           Text(
             "8",
             style: const TextStyle(
               fontSize: 26,
               fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+              color: AppColors.textPrimary,
             ),
           ),
-          Text("Total Jobs", textAlign: TextAlign.center,style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w400,
-            fontSize: 14,
-          ),),
-          Divider(
-            height: 05,
-          ),
-          Text("This Month", textAlign: TextAlign.center,style: TextStyle(
+          Text(
+            "Total Jobs",
+            textAlign: TextAlign.center,
+            style: TextStyle(
               color: AppColors.textPrimary,
-            fontWeight: FontWeight.w400,
-            fontSize: 14,
-          ),),
-          SizedBox(
-            height: 06,
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            ),
           ),
+          Divider(height: 10,thickness: 1,),
+          Text(
+            "This Month",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+            ),
+          ),
+          SizedBox(height: 06),
         ],
       ),
     );
@@ -500,18 +513,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _earningBox() {
     return Container(
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFFF1EEF9),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
-          Text("My Earnings", textAlign: TextAlign.center,style: TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),),
+          Text(
+            "My Earnings",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+          ),
           Text(
             '£862',
             style: const TextStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usafi_app/app/routes.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
+import 'package:usafi_app/core/widgets/app_circle_button.dart';
 import 'package:usafi_app/core/widgets/feed_item_card.dart';
 
 class FeedsScreen extends StatefulWidget {
@@ -96,17 +97,10 @@ Emily @ MINT
         style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: AppColors.secondary),
       ),
       actions: [
-        GestureDetector(
-          onTap: (){
-            Navigator.pushNamed(context, AppRoutes.profile,);
-          },
-          child: CircleAvatar(
-            backgroundColor: AppColors.circleButton,
-            child: Icon(Icons.menu,color: AppColors.secondary,size: 20,),
-          ),
-        ),SizedBox(
-          width: 10,
-        ),
+        AppCircleButton(profileImage: 'https://i.pravatar.cc/180', onTap: (){
+          Navigator.pushNamed(context, AppRoutes.profile,);
+        },profileIcon: true,),
+        SizedBox(width: 10,),
       ],
     );
   }

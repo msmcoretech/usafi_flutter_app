@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
+import 'package:usafi_app/core/constants/app_images.dart';
 
 class AppTextField extends StatefulWidget {
   final String hint;
@@ -39,12 +40,12 @@ class _AppTextFieldState extends State<AppTextField> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: _focused
             ? [
-          BoxShadow(
-            color: primaryPurple.withOpacity(0.25),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ]
+                BoxShadow(
+                  color: primaryPurple.withOpacity(0.25),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ]
             : [],
       ),
       child: Focus(
@@ -59,29 +60,29 @@ class _AppTextFieldState extends State<AppTextField> {
           obscureText: widget.isPassword ? _obscure : false,
           decoration: InputDecoration(
             hintText: widget.hint,
-            hintStyle: TextStyle(
-              color: AppColors.textSecondary,
-
-            ),
+            hintStyle: TextStyle(color: AppColors.textSecondary),
             counterText: "",
             prefixIcon: widget.prefixIcon != null
                 ? Icon(widget.prefixIcon)
                 : null,
             suffixIcon: widget.isPassword
                 ? IconButton(
-              icon: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: Icon(
-                  _obscure
-                      ? Icons.visibility_off
-                      : Icons.visibility,
-                  key: ValueKey(_obscure),
-                ),
-              ),
-              onPressed: () {
-                setState(() => _obscure = !_obscure);
-              },
-            )
+                    icon: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      child: _obscure
+                          ? Image(
+                              image: AssetImage(closeEye),
+                              width: 20,
+                            )
+                          : Image(
+                        image: AssetImage(openEye),
+                        width: 20,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() => _obscure = !_obscure);
+                    },
+                  )
                 : null,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 18,
@@ -93,16 +94,11 @@ class _AppTextFieldState extends State<AppTextField> {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide(
-                color: Colors.grey.shade400,
-              ),
+              borderSide: BorderSide(color: Colors.grey.shade400),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(
-                color: primaryPurple,
-                width: 1.6,
-              ),
+              borderSide: const BorderSide(color: primaryPurple, width: 1.6),
             ),
             filled: true,
             fillColor: Colors.white,

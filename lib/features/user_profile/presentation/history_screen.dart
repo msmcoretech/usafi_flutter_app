@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:usafi_app/app/routes.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
+import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/widgets/app_circle_button.dart';
 import 'package:usafi_app/core/widgets/job_item_card.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -34,7 +36,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         children: [
           _tabBar(),
           Container(
-            height: 03,
+            height: 07,
             color: AppColors.primary,
           ),
           Expanded(
@@ -61,9 +63,15 @@ class _HistoryScreenState extends State<HistoryScreen>
     return AppBar(
       elevation: 0,
       backgroundColor: AppColors.primary,
-      leading: _circleIcon(Icons.arrow_back, () {
-        Navigator.pop(context);
-      }),
+      leading: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: AppCircleButton(
+          icon: back,
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       title: const Text(
         'History',
         style: TextStyle(
@@ -76,20 +84,6 @@ class _HistoryScreenState extends State<HistoryScreen>
     );
   }
 
-  Widget _circleIcon(IconData icon, VoidCallback onTap) {
-    return Padding(
-      padding: EdgeInsetsGeometry.only(left: 16),
-      child: GestureDetector(
-        onTap: onTap,
-        child: CircleAvatar(
-          radius: 18,
-          backgroundColor: AppColors.circleButton,
-          child: Icon(icon, color: Colors.white, size: 18),
-        ),
-      ),
-    );
-  }
-
   Widget _tabBar() {
     return TabBar(
       controller: _tabController,
@@ -98,6 +92,14 @@ class _HistoryScreenState extends State<HistoryScreen>
       labelPadding: EdgeInsetsGeometry.zero,
       dividerColor: Colors.transparent,
       labelColor: AppColors.yellow,
+      indicator: const UnderlineTabIndicator(
+        borderSide: BorderSide(
+          width: 1.5,
+          color: AppColors.yellow,
+        ),
+        insets: EdgeInsets.symmetric(horizontal: 0),
+      ),
+
       unselectedLabelColor: AppColors.secondary,
       labelStyle: const TextStyle(
         fontSize: 15,
@@ -123,7 +125,7 @@ class _HistoryScreenState extends State<HistoryScreen>
             title: 'North — New Accreditations to Work Future Etihad Games',
             role: 'Bar Staff',
             index: index,
-            location: 'Etihad Stadium, Manchester',
+            locationText: 'Etihad Stadium, Manchester',
             status: status,
           ),
         );

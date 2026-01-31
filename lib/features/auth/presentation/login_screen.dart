@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_constants.dart';
 import 'package:usafi_app/core/constants/app_images.dart';
@@ -44,27 +45,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _header() {
     return Container(
-      height: MediaQuery.of(context).size.height / 2.8,
+      height: 0.36.sh,
       width: double.infinity,
       color: AppColors.primary,
       alignment: Alignment.center,
-      child: Image(image: AssetImage(appLogo), height: 75),
+      child: Image(
+        image: const AssetImage(appLogo),
+        height: 75.h,
+      ),
     );
   }
 
   Widget _loginCard() {
     return Container(
-      transform: Matrix4.translationValues(0, -80, 0),
-      padding: const EdgeInsets.all(24),
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      transform: Matrix4.translationValues(0, -80.h, 0),
+      padding: EdgeInsets.all(24.w),
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
       decoration: BoxDecoration(
         color: AppColors.secondary,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.06),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            blurRadius: 20.r,
+            offset: Offset(0, 10.h),
           ),
         ],
       ),
@@ -72,43 +76,53 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Center(
+          Center(
             child: Text(
               login,
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 26.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          const SizedBox(height: 16),
-          const Text(
+          SizedBox(height: 16.h),
+          Text(
             welcomeBack,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 16.sp,
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 20),
-          AppTextField(hint: email, keyboardType: TextInputType.emailAddress,controller: emailController,),
-          SizedBox(height: 14),
-          AppTextField(hint: password, isPassword: _obscurePassword,controller: passwordController,),
-
+          SizedBox(height: 20.h),
+          AppTextField(
+            hint: email,
+            keyboardType: TextInputType.emailAddress,
+            controller: emailController,
+          ),
+          SizedBox(height: 14.h),
+          AppTextField(
+            hint: password,
+            isPassword: _obscurePassword,
+            controller: passwordController,
+          ),
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, AppRoutes.forgotPassword);
               },
-              child: const Text(
+              child: Text(
                 forgotPassword,
                 style: TextStyle(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                  fontSize: 14.sp,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10.h),
           _loginButton(),
         ],
       ),
@@ -120,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> {
       title: logIn,
       onTap: () {
         _loginMethod();
-
       },
     );
   }
@@ -132,39 +145,43 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (AppValidators.password(passwordController!.text)) {
-      AppSnackBar.error(
-        context,
-        "Weak password",
-      );
+      AppSnackBar.error(context, "Weak password");
       return;
     }
-    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.mainNavigation,(route) => false,);
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoutes.mainNavigation,
+          (route) => false,
+    );
   }
 
   Widget _footer() {
     return Container(
-      transform: Matrix4.translationValues(0, -60, 0),
+      transform: Matrix4.translationValues(0, -60.h, 0),
+      margin: EdgeInsets.only(bottom: 20.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             doNotHaveAccount,
             style: TextStyle(
               color: AppColors.textSecondary,
-              fontSize: 17,
+              fontSize: 17.sp,
               fontWeight: FontWeight.w400,
             ),
           ),
+          SizedBox(width: 4.w),
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.signup);
             },
-            child: const Text(
+            child: Text(
               signup,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: AppColors.textSecondary,
-                fontSize: 17,
+                fontSize: 17.sp,
               ),
             ),
           ),

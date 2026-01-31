@@ -13,10 +13,7 @@ class AppTheme {
       error: AppColors.error,
     ),
     scaffoldBackgroundColor: AppColors.scaffoldBg,
-    textTheme: GoogleFonts.kodchasanTextTheme().copyWith(
-      bodyLarge: GoogleFonts.kodchasan(color: AppColors.textPrimary),
-      bodyMedium: GoogleFonts.kodchasan(color: AppColors.textPrimary),
-    ),
+    textTheme: GoogleFonts.kodchasanTextTheme(),
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,

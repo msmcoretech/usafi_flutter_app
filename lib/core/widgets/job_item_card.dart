@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
+import 'package:usafi_app/core/constants/app_images.dart';
 
 class JobItemCard extends StatelessWidget {
   final String date;
   final String time;
   final String title;
   final String role;
-  final String location;
+  final String locationText;
   final String status;
   final int index;
   final bool showApplyButton;
@@ -19,7 +20,7 @@ class JobItemCard extends StatelessWidget {
     required this.title,
     required this.role,
     required this.index,
-    required this.location,
+    required this.locationText,
     required this.status,
     this.showApplyButton = false,
     this.onApply,
@@ -126,6 +127,7 @@ class JobItemCard extends StatelessWidget {
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
                 radius: 22,
@@ -156,22 +158,27 @@ class JobItemCard extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(height: 20),
+          const Divider(height: 25),
           Row(
             children: [
-              const Icon(Icons.location_on, size: 18, color: AppColors.primary),
-              const SizedBox(width: 6),
+              const Image(
+                image: AssetImage(location),
+                height: 15,
+              ),
+              const SizedBox(width: 08),
               Expanded(
                 child: Text(
-                  location,
+                  locationText,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     color: AppColors.textPrimary,
+                    fontSize: 15
                   ),
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 05),
           if (showApplyButton) _applyButton(),
         ],
       ),

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:usafi_app/core/widgets/app_webview_screen.dart';
 import 'package:usafi_app/features/auth/presentation/change_password_screen.dart';
 import 'package:usafi_app/features/auth/presentation/forgot_password_screen.dart';
 import 'package:usafi_app/features/auth/presentation/login_screen.dart';
 import 'package:usafi_app/features/auth/presentation/otp_verification_screen.dart';
 import 'package:usafi_app/features/auth/presentation/signup_screen.dart';
 import 'package:usafi_app/features/intro/view/intro_screen.dart';
+import 'package:usafi_app/features/main_navigation/presentation/contact_us_screen.dart';
 import 'package:usafi_app/features/main_navigation/presentation/job_detail_screen.dart';
 import 'package:usafi_app/features/main_navigation/presentation/main_navigation_screen.dart';
 import 'package:usafi_app/features/main_navigation/presentation/map_screen.dart';
+import 'package:usafi_app/features/main_navigation/presentation/notification_screen.dart';
 import 'package:usafi_app/features/splash/view/splash_screen.dart';
 import 'package:usafi_app/features/user_profile/presentation/edit_profile_screen.dart';
 import 'package:usafi_app/features/user_profile/presentation/history_screen.dart';
@@ -31,6 +34,9 @@ class AppRoutes {
   static const verifyProfile = '/verify-profile';
   static const history = '/history';
   static const map = '/map';
+  static const notification = '/notification';
+  static const contactUs = '/contactUs';
+  static const webview = '/webview';
 }
 
 class AppRouter {
@@ -63,28 +69,45 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const MainNavigationScreen());
 
       case AppRoutes.jobDetail:
-        final Map<String?,dynamic> data = settings.arguments as Map<String?,dynamic>? ?? {};
+        final Map<String?, dynamic> data =
+            settings.arguments as Map<String?, dynamic>? ?? {};
         return MaterialPageRoute(
-          builder: (_) => JobDetailScreen(jobStatus: data["jobStatus"]!, isFromWhere: data["isFromWhere"]!,),
+          builder: (_) => JobDetailScreen(
+            jobStatus: data["jobStatus"]!,
+            isFromWhere: data["isFromWhere"]!,
+          ),
         );
 
       case AppRoutes.profile:
         return MaterialPageRoute(builder: (_) => const MyProfileScreen());
 
-        case AppRoutes.editProfile:
+      case AppRoutes.editProfile:
         return MaterialPageRoute(builder: (_) => const EditProfileScreen());
 
-        case AppRoutes.roleSkills:
+      case AppRoutes.roleSkills:
         return MaterialPageRoute(builder: (_) => const RoleSkillsScreen());
 
-        case AppRoutes.verifyProfile:
+      case AppRoutes.verifyProfile:
         return MaterialPageRoute(builder: (_) => const ProfileVerifyScreen());
 
-        case AppRoutes.history:
+      case AppRoutes.history:
         return MaterialPageRoute(builder: (_) => const HistoryScreen());
 
-        case AppRoutes.map:
+      case AppRoutes.map:
         return MaterialPageRoute(builder: (_) => const MapScreen());
+
+      case AppRoutes.notification:
+        return MaterialPageRoute(builder: (_) => const NotificationScreen());
+
+      case AppRoutes.contactUs:
+        return MaterialPageRoute(builder: (_) => const ContactUsScreen());
+      case AppRoutes.webview:
+        final Map<String?, String> data =
+            settings.arguments as Map<String?, String>? ?? {};
+        return MaterialPageRoute(
+          builder: (_) =>
+              AppWebViewScreen(url: data["url"]!, title: data["title"]!),
+        );
 
       default:
         return MaterialPageRoute(builder: (_) => const IntroScreen());

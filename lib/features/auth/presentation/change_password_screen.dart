@@ -136,6 +136,6 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
       AppSnackBar.error(context, 'Please enter valid password');
       return;
     }
-    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.mainNavigation,(route) => false,);
+    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login,(route) => false,);
   }
 }

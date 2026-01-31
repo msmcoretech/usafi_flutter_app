@@ -7,6 +7,8 @@ import 'package:usafi_app/core/constants/app_colors.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:usafi_app/core/constants/app_images.dart';
+import 'package:usafi_app/core/widgets/app_circle_button.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -18,7 +20,7 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? _mapController;
 
-  final LatLng _destination = const LatLng(26.9124, 79.7873);
+  final LatLng _destination = const LatLng(26.9124, 75.7873);
   LatLng? _currentLocation;
 
   final Set<Marker> _markers = {};
@@ -94,16 +96,12 @@ class _MapScreenState extends State<MapScreen> {
       backgroundColor: AppColors.primary,
       appBar: AppBar(
         leading: Padding(
-          padding: EdgeInsetsGeometry.only(left: 16),
-          child: GestureDetector(
-            onTap: (){
+          padding: const EdgeInsets.all(5.0),
+          child: AppCircleButton(
+            icon: back,
+            onTap: () {
               Navigator.of(context).pop();
             },
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: AppColors.circleButton,
-              child: Icon(Icons.arrow_back, color: Colors.white, size: 18),
-            ),
           ),
         ),
         title: const Text(
@@ -154,7 +152,7 @@ class _MapScreenState extends State<MapScreen> {
 
   Widget _locationCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(07),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
@@ -166,22 +164,50 @@ class _MapScreenState extends State<MapScreen> {
         ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.location_on, color: AppColors.primary),
+          CircleAvatar(
+            radius: 13,
+            backgroundColor: AppColors.jobHeader,
+            child: Image(image:AssetImage(marker),height: 15,),
+          ),
           const SizedBox(width: 10),
           const Expanded(
-            child: Text(
-              'Etihad Stadium, Manchester',
-              style: TextStyle(fontWeight: FontWeight.w600),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Location',
+                  style: TextStyle(fontWeight: FontWeight.w600,color: AppColors.textSecondary),
+                ),
+                Text(
+                  'Etihad Stadium, Manchester',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ],
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            // margin: EdgeInsets.only(left: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.lightPrimary,
+              border: Border.all(color: AppColors.primary,width: 0.8),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text('3.5 km'),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image(image:AssetImage(distance),height: 13,),
+                SizedBox(width: 05),
+                const Text(
+                  '3.5 km',
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -211,7 +237,7 @@ class _MapScreenState extends State<MapScreen> {
 class MarkerIconHelper {
   static Future<BitmapDescriptor> roundPinFromNetwork(
       String imageUrl, {
-        int size = 200,
+        int size = 150,
         Color pinColor = AppColors.primary,
       }) async {
     final response = await http.get(Uri.parse(imageUrl));

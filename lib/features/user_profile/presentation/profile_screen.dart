@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:usafi_app/app/routes.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
+import 'package:usafi_app/core/constants/app_images.dart';
 import 'package:usafi_app/core/widgets/app_button.dart';
+import 'package:usafi_app/core/widgets/app_circle_button.dart';
+import 'package:usafi_app/core/widgets/app_popup.dart';
+import 'package:usafi_app/core/widgets/app_switch_button.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
@@ -11,15 +16,199 @@ class MyProfileScreen extends StatefulWidget {
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
+  bool notificationsEnabled = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primary,
+      appBar: _appBar(),
       body: Column(
         children: [
           _profileHeader(context),
           Expanded(child: _profileDetails()),
         ],
+      ),
+    );
+  }
+
+  PreferredSizeWidget _appBar() {
+    return AppBar(
+      leading: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: AppCircleButton(
+          icon: back,
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      centerTitle: false,
+      title: Text(
+        'My Profile',
+        style: TextStyle(
+          color: AppColors.secondary,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      actions: [
+        PopupMenuButton<String>(
+          offset: const Offset(-20, 50),
+          color: AppColors.secondary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(18),
+                bottomRight: Radius.circular(18),
+                topLeft: Radius.circular(18),
+            ),
+          ),
+          icon: CircleAvatar(
+            backgroundColor: AppColors.circleButton,
+            child: Image(image: AssetImage(settings), height: 20),
+          ),
+          onSelected: (value) {
+            debugPrint(value);
+            switch (value) {
+              case 'notification':
+                break;
+              case 'contactUs':
+                Navigator.pushNamed(context, AppRoutes.contactUs);
+                break;
+              case 'privacyPolicy':
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.webview,
+                  arguments: {
+                    "url": "https://flutter.dev/",
+                    "title": "Privacy Policy",
+                  },
+                );
+                break;
+              case 'termsAndCondition':
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.webview,
+                  arguments: {
+                    "url": "https://flutter.dev/",
+                    "title": "Terms & Condition",
+                  },
+                );
+                break;
+              case 'deleteAccount':
+                _deleteAccount();
+                break;
+              case 'logout':
+                _logoutAccount();
+                break;
+            }
+          },
+          itemBuilder: (context) => [
+            _menuHeader(),
+            PopupMenuDivider(color: AppColors.jobHeader, thickness: 03),
+            _menuItem('notification', 'Notification'),
+            PopupMenuDivider(color: Colors.transparent, height: 10),
+            _menuItem('contactUs', 'Contact Us'),
+            PopupMenuDivider(color: Colors.transparent, height: 10),
+            _menuItem('privacyPolicy', 'Privacy Policy'),
+            PopupMenuDivider(color: Colors.transparent, height: 10),
+            _menuItem('termsAndCondition', 'Terms & Conditions'),
+            PopupMenuDivider(color: Colors.transparent, height: 10),
+            _menuItem('deleteAccount', 'Delete Account'),
+            PopupMenuDivider(color: Colors.transparent, height: 10),
+            _menuItem('logout', 'Logout'),
+            _menuBottom(),
+          ],
+        ),
+        SizedBox(width: 10,),
+      ],
+    );
+  }
+
+  PopupMenuItem<String> _menuHeader() {
+    return const PopupMenuItem<String>(
+      enabled: false,
+      height: 40,
+      child: Text(
+        'Settings',
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
+        ),
+      ),
+    );
+  }
+
+  PopupMenuItem<String> _menuBottom() {
+    return PopupMenuItem<String>(
+      enabled: false,
+      height: 40,
+      child: Center(
+        child: Text(
+          "V 1.0",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+
+  PopupMenuItem<String> _menuItem(String value, String title) {
+    return PopupMenuItem<String>(
+      value: value,
+
+      child: Container(
+        height: 60,
+        width: double.infinity,
+        // margin: EdgeInsets.only(bottom: 06),
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(vertical: 08, horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: AppColors.borderColor),
+        ),
+        child: title == "Notification"
+            ? StatefulBuilder(
+                builder: (context, setPopupState) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      CupertinoSwitch(
+                        value: notificationsEnabled,
+                        activeColor: AppColors.primary,
+                        onChanged: (value) {
+                          setPopupState(() {
+                            notificationsEnabled = !notificationsEnabled;
+                          });
+                        },
+                      ),
+                    ],
+                  );
+                },
+              )
+            : Text(
+                title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: title == "Delete Account"
+                      ? AppColors.jobRejected
+                      : AppColors.textPrimary,
+                ),
+              ),
       ),
     );
   }
@@ -33,23 +222,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         decoration: const BoxDecoration(color: AppColors.primary),
         child: Column(
           children: [
-            Row(
-              children: [
-                _circleIcon(Icons.arrow_back, () {
-                  Navigator.pop(context);
-                }),
-                const SizedBox(width: 12),
-                const Text(
-                  'My Profile',
-                  style: TextStyle(
-                    color: AppColors.secondary,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -82,11 +254,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     const SizedBox(height: 6),
                     const Row(
                       children: [
-                        Icon(
-                          Icons.call_outlined,
-                          color: AppColors.secondary,
-                          size: 15,
-                        ),
+                        Image(image: AssetImage(phone), height: 12),
+                        SizedBox(width: 05),
                         Text(
                           '+12 36547890',
                           style: TextStyle(color: Colors.white70),
@@ -96,11 +265,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     const SizedBox(height: 4),
                     const Row(
                       children: [
-                        Icon(
-                          Icons.email_outlined,
-                          color: AppColors.secondary,
-                          size: 15,
-                        ),
+                        Image(image: AssetImage(mail), height: 12),
+                        SizedBox(width: 05),
                         Text(
                           'janecooper@usafi.com',
                           style: TextStyle(color: Colors.white70),
@@ -169,7 +335,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.verified, color: Colors.red, size: 26),
+          const Image(image: AssetImage(verify), height: 28),
           const SizedBox(width: 12),
           const Expanded(
             child: Column(
@@ -187,12 +353,15 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               ],
             ),
           ),
-          const SizedBox(width: 06),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, AppRoutes.verifyProfile);
-            },
-            child: _headerButton('Verify'),
+          // const SizedBox(width: 06),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.verifyProfile);
+              },
+              child: _headerButton('Verify'),
+            ),
           ),
         ],
       ),
@@ -233,17 +402,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         onTap: () {
           Navigator.pushNamed(context, AppRoutes.roleSkills);
         },
-      ),
-    );
-  }
-
-  Widget _circleIcon(IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: CircleAvatar(
-        radius: 18,
-        backgroundColor: AppColors.circleButton,
-        child: Icon(icon, color: Colors.white, size: 18),
       ),
     );
   }
@@ -299,5 +457,77 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   Widget _divider() {
     return Divider(height: 1, thickness: 0.6, color: AppColors.jobPending);
+  }
+
+  void _deleteAccount() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black.withOpacity(0.45),
+      builder: (_) => CommonResultDialog(
+        title: "Delete Account",
+        icon: deleteAccount,
+        description: Container(
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            color: AppColors.jobHeader,
+          ),
+          child: Text(
+            "Do you want to delete your account?",
+            maxLines: 3,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        onPrimaryTap: () {
+          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login,(route) => false,);
+        },
+        onSecondaryTap: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  void _logoutAccount() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black.withOpacity(0.45),
+      builder: (_) => CommonResultDialog(
+        title: "Logout",
+        icon: logout,
+        description: Container(
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            color: AppColors.jobHeader,
+          ),
+          child: Text(
+            "Do you want to logout your account?",
+            maxLines: 3,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        onPrimaryTap: () {
+          Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login,(route) => false,);
+        },
+        onSecondaryTap: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
   }
 }

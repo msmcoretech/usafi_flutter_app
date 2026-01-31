@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
+import 'package:usafi_app/core/constants/app_images.dart';
 
 class FeedItemCard extends StatelessWidget {
   final String author;
@@ -97,15 +98,14 @@ class FeedItemCard extends StatelessWidget {
 
   Widget _footer() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
       decoration: BoxDecoration(
         color: AppColors.jobHeader,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
       ),
       child: Row(
         children: [
-          const Icon(Icons.thumb_up_alt_outlined,
-              size: 20, color: AppColors.textSecondary),
+          Image(image:AssetImage(like),height: 30,),
           const SizedBox(width: 8),
           Text(
             '$likes Likes',

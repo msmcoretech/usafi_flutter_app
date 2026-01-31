@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:usafi_app/app/routes.dart';
 import 'package:usafi_app/core/constants/app_colors.dart';
 import 'package:usafi_app/core/constants/app_constants.dart';
@@ -13,29 +14,23 @@ class IntroScreen extends StatefulWidget {
   State<IntroScreen> createState() => _IntroScreenState();
 }
 
-class _IntroScreenState extends State<IntroScreen>
-    with SingleTickerProviderStateMixin {
-
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          _background(),
-          _angledCards(),
-          _bottomContent(),
-        ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            _background(),
+            _angledCards(),
+            _bottomContent(),
+          ],
+        ),
       ),
     );
   }
 
-  // 🔹 Background Image
   Widget _background() {
     return Container(
       decoration: const BoxDecoration(
@@ -47,10 +42,9 @@ class _IntroScreenState extends State<IntroScreen>
     );
   }
 
-
   Widget _angledCards() {
     return Positioned(
-      top: 150,
+      top: 0.10.sh, // responsive height
       left: 0,
       right: 0,
       child: Column(
@@ -59,23 +53,23 @@ class _IntroScreenState extends State<IntroScreen>
             text: findYourDreamJob,
             color: AppColors.yellow,
             angle: -15,
-            delay: 0,
+            delay: 100,
             textColor: Colors.black,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           _animatedLabel(
             text: flexibleJobProvider,
             color: AppColors.green,
             angle: 10,
-            delay: 600,
+            delay: 800,
             textColor: Colors.white,
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: 20.h),
           _animatedLabel(
             text: connectWithProvider,
             color: AppColors.secondary,
             angle: -15,
-            delay: 1000,
+            delay: 1500,
             textColor: Colors.black,
           ),
         ],
@@ -83,26 +77,25 @@ class _IntroScreenState extends State<IntroScreen>
     );
   }
 
-
   Widget _bottomContent() {
     return Positioned(
-      bottom: 60,
-      left: 24,
-      right: 24,
+      bottom: 0.02.sh,
+      left: 24.w,
+      right: 24.w,
       child: Column(
         children: [
-          const Text(
+          Text(
             applicationForJobProvider,
             maxLines: 3,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 30,
+              fontSize: 28.sp,
               fontWeight: FontWeight.w700,
               height: 1.3,
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 20.h),
           AppButton(
             title: getStarted,
             backgroundColor: AppColors.secondary,
@@ -120,7 +113,7 @@ class _IntroScreenState extends State<IntroScreen>
     required String text,
     required Color color,
     required double angle,
-    required int delay, // milliseconds
+    required int delay,
     required Color textColor,
   }) {
     return _DelayedAnimatedLabel(
@@ -132,7 +125,6 @@ class _IntroScreenState extends State<IntroScreen>
     );
   }
 }
-
 
 class _DelayedAnimatedLabel extends StatefulWidget {
   final String text;
@@ -179,7 +171,7 @@ class _DelayedAnimatedLabelState extends State<_DelayedAnimatedLabel> {
         final safeValue = value.clamp(0.0, 1.0);
 
         return Transform.translate(
-          offset: Offset(0, (1 - safeValue) * 40),
+          offset: Offset(0, (1 - safeValue) * 40.h),
           child: Opacity(
             opacity: safeValue,
             child: Transform.rotate(
@@ -196,19 +188,21 @@ class _DelayedAnimatedLabelState extends State<_DelayedAnimatedLabel> {
     );
   }
 
-
   Widget _labelContainer(String text, Color bg, Color textColor) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 14),
+      padding: EdgeInsets.symmetric(
+        horizontal: 26.w,
+        vertical: 14.h,
+      ),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(14.r),
       ),
       child: Text(
         text,
         style: TextStyle(
           color: textColor,
-          fontSize: 23,
+          fontSize: 22.sp,
           fontWeight: FontWeight.w600,
         ),
       ),
